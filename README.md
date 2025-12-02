@@ -1,4 +1,4 @@
-# UAE Wealth Builder - Personal Finance Flutter App
+# Personal Wealth Builder - Privacy First Personal Finance App
 ## Complete Developer Guide & Detailed Specification
 
 *Privacy-First Android App for UAE Residents*  
