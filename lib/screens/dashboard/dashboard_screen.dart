@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'dart:ui';
 import 'package:intl/intl.dart';
 import '../../constants/app_constants.dart';
 import '../../widgets/stat_card.dart';
@@ -6,6 +7,7 @@ import '../../widgets/budget_progress_card.dart';
 import '../../widgets/alert_card.dart';
 import '../../services/database_service.dart';
 import '../../models/transaction.dart';
+import '../../utils/page_transitions.dart';
 import 'transaction_list_screen.dart';
 import '../reports/reports_screen.dart';
 import '../settings/settings_screen.dart';
@@ -112,53 +114,87 @@ class _DashboardScreenState extends State<DashboardScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Wealth Builder'),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.notifications_outlined),
-            onPressed: () {
-              // TODO: Navigate to notifications
-            },
+      backgroundColor: AppColors.background,
+      extendBodyBehindAppBar: true,
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(56.0),
+        child: ClipRRect(
+          child: BackdropFilter(
+            filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+            child: AppBar(
+              elevation: 0,
+              backgroundColor: AppColors.surface.withOpacity(0.8),
+              title: Text(
+                'Wealth Builder',
+                style: AppTextStyles.heading2.copyWith(
+                  color: AppColors.textPrimary,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+              actions: [
+                IconButton(
+                  icon: Icon(
+                    Icons.notifications_outlined,
+                    color: AppColors.primary,
+                  ),
+                  onPressed: () {
+                    // TODO: Navigate to notifications
+                  },
+                ),
+                const SizedBox(width: AppConstants.spacingXS),
+              ],
+            ),
           ),
-          IconButton(
-            icon: const Icon(Icons.settings_outlined),
-            onPressed: () {
-              // TODO: Navigate to settings
-            },
-          ),
-        ],
+        ),
       ),
       body: _selectedIndex == 0
           ? _buildDashboard()
           : _selectedIndex == 1
               ? _buildReports()
               : _buildSettings(),
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _selectedIndex,
-        onTap: (index) {
-          setState(() {
-            _selectedIndex = index;
-          });
-        },
-        selectedItemColor: AppColors.primary,
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home_outlined),
-            activeIcon: Icon(Icons.home),
-            label: 'Dashboard',
+      bottomNavigationBar: Container(
+        decoration: BoxDecoration(
+          border: Border(
+            top: BorderSide(
+              color: AppColors.divider,
+              width: 0.5,
+            ),
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.bar_chart_outlined),
-            activeIcon: Icon(Icons.bar_chart),
-            label: 'Reports',
+        ),
+        child: BottomNavigationBar(
+          currentIndex: _selectedIndex,
+          onTap: (index) {
+            setState(() {
+              _selectedIndex = index;
+            });
+          },
+          backgroundColor: AppColors.surface,
+          selectedItemColor: AppColors.primary,
+          unselectedItemColor: AppColors.textSecondary,
+          type: BottomNavigationBarType.fixed,
+          elevation: 0,
+          selectedLabelStyle: AppTextStyles.caption.copyWith(
+            fontWeight: FontWeight.w600,
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.settings_outlined),
-            activeIcon: Icon(Icons.settings),
-            label: 'Settings',
-          ),
-        ],
+          unselectedLabelStyle: AppTextStyles.caption,
+          items: const [
+            BottomNavigationBarItem(
+              icon: Icon(Icons.home_outlined),
+              activeIcon: Icon(Icons.home),
+              label: 'Dashboard',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.bar_chart_outlined),
+              activeIcon: Icon(Icons.bar_chart),
+              label: 'Reports',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.settings_outlined),
+              activeIcon: Icon(Icons.settings),
+              label: 'Settings',
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -170,7 +206,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
         await Future.delayed(const Duration(seconds: 1));
       },
       child: SingleChildScrollView(
-        padding: const EdgeInsets.all(AppConstants.spacingM),
+        padding: const EdgeInsets.only(
+          top: 72, // Account for transparent app bar
+          left: AppConstants.spacingM,
+          right: AppConstants.spacingM,
+          bottom: AppConstants.spacingM,
+        ),
         physics: const AlwaysScrollableScrollPhysics(),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -243,67 +284,113 @@ class _DashboardScreenState extends State<DashboardScreen> {
             color: AppColors.textSecondary,
           ),
         ),
-        const SizedBox(height: 4),
+        const SizedBox(height: AppConstants.spacingXS),
         Text(
           widget.userName,
-          style: AppTextStyles.heading1.copyWith(fontSize: 28),
+          style: AppTextStyles.largeTitle,
         ),
       ],
     );
   }
 
   Widget _buildNetWorthCard() {
-    return Card(
-      color: AppColors.primary,
-      child: Padding(
-        padding: const EdgeInsets.all(AppConstants.spacingL),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                const Icon(
-                  Icons.account_balance_wallet,
-                  color: Colors.white70,
-                  size: 24,
-                ),
-                const SizedBox(width: AppConstants.spacingS),
-                Text(
-                  'Net Worth',
-                  style: AppTextStyles.heading2.copyWith(
-                    color: Colors.white70,
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: AppConstants.spacingM),
-            Text(
-              '${widget.currency} ${_currencyFormat.format(_netWorth)}',
-              style: AppTextStyles.heading1.copyWith(
-                fontSize: 36,
-                color: Colors.white,
-              ),
-            ),
-            const SizedBox(height: AppConstants.spacingS),
-            Row(
-              children: [
-                Icon(
-                  Icons.trending_up,
-                  color: AppColors.secondary,
-                  size: 20,
-                ),
-                const SizedBox(width: 4),
-                Text(
-                  '+3.2% this month',
-                  style: AppTextStyles.bodyMedium.copyWith(
-                    color: AppColors.secondary,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-              ],
-            ),
+    return Container(
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [
+            AppColors.primary,
+            AppColors.primary.withOpacity(0.8),
           ],
         ),
+        borderRadius: BorderRadius.circular(AppConstants.cardBorderRadius),
+        boxShadow: [
+          BoxShadow(
+            color: AppColors.primary.withOpacity(0.3),
+            blurRadius: 16,
+            offset: const Offset(0, 8),
+          ),
+        ],
+      ),
+      padding: const EdgeInsets.all(AppConstants.spacingL),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Container(
+                padding: const EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  color: Colors.white.withOpacity(0.2),
+                  borderRadius: BorderRadius.circular(AppConstants.smallBorderRadius),
+                ),
+                child: const Icon(
+                  Icons.account_balance_wallet_outlined,
+                  color: Colors.white,
+                  size: 20,
+                ),
+              ),
+              const SizedBox(width: AppConstants.spacingS),
+              Text(
+                'Net Worth',
+                style: AppTextStyles.callout.copyWith(
+                  color: Colors.white.withOpacity(0.9),
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: AppConstants.spacingM),
+          Text(
+            '${widget.currency} ${_currencyFormat.format(_netWorth)}',
+            style: AppTextStyles.numberLarge.copyWith(
+              fontSize: 40,
+              color: Colors.white,
+              fontWeight: FontWeight.w700,
+            ),
+          ),
+          const SizedBox(height: AppConstants.spacingS),
+          Row(
+            children: [
+              Container(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 8,
+                  vertical: 4,
+                ),
+                decoration: BoxDecoration(
+                  color: AppColors.success.withOpacity(0.2),
+                  borderRadius: BorderRadius.circular(AppConstants.smallBorderRadius),
+                ),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(
+                      Icons.trending_up,
+                      color: AppColors.success,
+                      size: 16,
+                    ),
+                    const SizedBox(width: 4),
+                    Text(
+                      '+3.2%',
+                      style: AppTextStyles.caption.copyWith(
+                        color: AppColors.success,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(width: AppConstants.spacingS),
+              Text(
+                'this month',
+                style: AppTextStyles.caption.copyWith(
+                  color: Colors.white.withOpacity(0.8),
+                ),
+              ),
+            ],
+          ),
+        ],
       ),
     );
   }
@@ -367,18 +454,18 @@ class _DashboardScreenState extends State<DashboardScreen> {
             ),
             TextButton(
               onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => InsightsScreen(
-                      monthlySalary: widget.monthlySalary,
-                      emergencyFundGoal: widget.emergencyFundGoal,
-                      currency: widget.currency,
-                    ),
+                context.pushApple(
+                  InsightsScreen(
+                    monthlySalary: widget.monthlySalary,
+                    emergencyFundGoal: widget.emergencyFundGoal,
+                    currency: widget.currency,
                   ),
                 );
               },
-              child: const Text('View All'),
+              child: Text(
+                'View All',
+                style: TextStyle(color: AppColors.primary),
+              ),
             ),
           ],
         ),
@@ -390,13 +477,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
           description: 'Spent AED 1,725 vs budget of AED 1,500',
           color: AppColors.warning,
           onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => BudgetScreen(
-                  monthlySalary: widget.monthlySalary,
-                  currency: widget.currency,
-                ),
+            context.pushApple(
+              BudgetScreen(
+                monthlySalary: widget.monthlySalary,
+                currency: widget.currency,
               ),
             );
           },
@@ -409,16 +493,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
           description: 'You have AED 500 unused wants. FAB Saver offers 4.75% APY',
           color: AppColors.success,
           onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => InsightsScreen(
-                  monthlySalary: widget.monthlySalary,
-                  emergencyFundGoal: widget.emergencyFundGoal,
-                  currency: widget.currency,
-                ),
-              ),
-            );
+            // TODO: Navigate to investments
           },
         ),
         const SizedBox(height: AppConstants.spacingM),
@@ -429,14 +504,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
           description: 'Netflix inactive for 30 days. Save AED 50/month?',
           color: AppColors.primary,
           onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => InsightsScreen(
-                  monthlySalary: widget.monthlySalary,
-                  emergencyFundGoal: widget.emergencyFundGoal,
-                  currency: widget.currency,
-                ),
+            context.pushApple(
+              InsightsScreen(
+                monthlySalary: widget.monthlySalary,
+                emergencyFundGoal: widget.emergencyFundGoal,
+                currency: widget.currency,
               ),
             );
           },
@@ -458,14 +530,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
             ),
             TextButton(
               onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const TransactionListScreen(),
-                  ),
-                );
+                context.pushApple(const TransactionListScreen());
               },
-              child: const Text('View All'),
+              child: Text(
+                'View All',
+                style: TextStyle(color: AppColors.primary),
+              ),
             ),
           ],
         ),

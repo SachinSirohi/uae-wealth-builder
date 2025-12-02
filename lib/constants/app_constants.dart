@@ -1,120 +1,153 @@
 import 'package:flutter/material.dart';
 
-/// App color palette based on UAE theme
+/// Modern Apple-inspired color palette
 class AppColors {
-  // Primary Colors
-  static const Color primary = Color(0xFF006400); // Deep UAE Green
-  static const Color secondary = Color(0xFFFFD700); // Gold Accent
+  // Primary Colors - iOS Blue & Neutrals
+  static const Color primary = Color(0xFF007AFF); // iOS Blue
+  static const Color secondary = Color(0xFF5856D6); // iOS Purple
   
   // Status Colors
-  static const Color success = Color(0xFF28A745); // Savings Green
-  static const Color warning = Color(0xFFFFC107); // Budget Alert
-  static const Color danger = Color(0xFFDC3545); // Overspend Red
+  static const Color success = Color(0xFF34C759); // iOS Green
+  static const Color warning = Color(0xFFFF9500); // iOS Orange
+  static const Color error = Color(0xFFFF3B30); // iOS Red
+  static const Color danger = Color(0xFFFF3B30); // Alias for error
   
-  // Background Colors
-  static const Color background = Color(0xFFFFFFFF); // Clean White
-  static const Color surface = Color(0xFFF8F9FA); // Light Gray
+  // Background Colors - iOS Style
+  static const Color background = Color(0xFFF2F2F7); // iOS System Background
+  static const Color surface = Color(0xFFFFFFFF); // Pure White Cards
+  static const Color surfaceSecondary = Color(0xFFF9F9F9); // Subtle Gray
   
   // Text Colors
-  static const Color textPrimary = Color(0xFF212529);
-  static const Color textSecondary = Color(0xFF6C757D);
+  static const Color textPrimary = Color(0xFF000000);
+  static const Color textSecondary = Color(0xFF8E8E93); // iOS Secondary Text
+  static const Color textTertiary = Color(0xFFC7C7CC);
   
   // Additional Colors
-  static const Color cardBorder = Color(0xFFE0E0E0);
-  static const Color divider = Color(0xFFE0E0E0);
+  static const Color cardBorder = Color(0xFFE5E5EA); // Subtle borders
+  static const Color divider = Color(0xFFE5E5EA);
+  static const Color accent = Color(0xFF5AC8FA); // iOS Teal
 
-  // Budget Category Colors
-  static const Color needsColor = Color(0xFF4A90D9); // Blue for Needs
-  static const Color wantsColor = Color(0xFFE67E22); // Orange for Wants
-  static const Color savingsColor = Color(0xFF27AE60); // Green for Savings
+  // Budget Category Colors - Softer palette
+  static const Color needsColor = Color(0xFF007AFF); // iOS Blue
+  static const Color wantsColor = Color(0xFFFF9500); // iOS Orange
+  static const Color savingsColor = Color(0xFF34C759); // iOS Green
 }
 
-/// Typography styles
+/// Typography styles - San Francisco inspired
 class AppTextStyles {
+  // Large Titles (iOS Style)
+  static const TextStyle largeTitle = TextStyle(
+    fontSize: 34,
+    fontWeight: FontWeight.w700,
+    letterSpacing: 0.37,
+    color: AppColors.textPrimary,
+  );
+  
   // Headings
   static const TextStyle heading1 = TextStyle(
-    fontFamily: 'Roboto',
-    fontSize: 24,
-    fontWeight: FontWeight.bold,
+    fontSize: 28,
+    fontWeight: FontWeight.w600,
+    letterSpacing: 0.36,
     color: AppColors.textPrimary,
   );
   
   static const TextStyle heading2 = TextStyle(
-    fontFamily: 'Roboto',
-    fontSize: 20,
-    fontWeight: FontWeight.bold,
+    fontSize: 22,
+    fontWeight: FontWeight.w600,
+    letterSpacing: 0.35,
     color: AppColors.textPrimary,
   );
   
   static const TextStyle heading3 = TextStyle(
-    fontFamily: 'Roboto',
-    fontSize: 16,
-    fontWeight: FontWeight.bold,
+    fontSize: 20,
+    fontWeight: FontWeight.w600,
+    letterSpacing: 0.38,
     color: AppColors.textPrimary,
   );
   
   // Body Text
   static const TextStyle bodyLarge = TextStyle(
-    fontFamily: 'Roboto',
-    fontSize: 16,
-    fontWeight: FontWeight.normal,
+    fontSize: 17,
+    fontWeight: FontWeight.w400,
+    letterSpacing: -0.41,
     color: AppColors.textPrimary,
   );
   
   static const TextStyle bodyMedium = TextStyle(
-    fontFamily: 'Roboto',
-    fontSize: 14,
-    fontWeight: FontWeight.normal,
+    fontSize: 15,
+    fontWeight: FontWeight.w400,
+    letterSpacing: -0.24,
     color: AppColors.textSecondary,
   );
   
-  // Numbers (for balances and amounts)
+  // Numbers (for balances and amounts) - Tabular nums
   static const TextStyle numberLarge = TextStyle(
-    fontFamily: 'Roboto',
-    fontSize: 20,
-    fontWeight: FontWeight.w500,
+    fontSize: 32,
+    fontWeight: FontWeight.w600,
+    letterSpacing: 0.5,
     color: AppColors.textPrimary,
+    fontFeatures: [FontFeature.tabularFigures()],
   );
   
   static const TextStyle numberMedium = TextStyle(
-    fontFamily: 'Roboto',
-    fontSize: 18,
-    fontWeight: FontWeight.w500,
+    fontSize: 24,
+    fontWeight: FontWeight.w600,
+    letterSpacing: 0.36,
     color: AppColors.textPrimary,
+    fontFeatures: [FontFeature.tabularFigures()],
+  );
+  
+  // Callout (iOS Style)
+  static const TextStyle callout = TextStyle(
+    fontSize: 16,
+    fontWeight: FontWeight.w400,
+    letterSpacing: -0.32,
+    color: AppColors.textPrimary,
+  );
+  
+  // Caption
+  static const TextStyle caption = TextStyle(
+    fontSize: 13,
+    fontWeight: FontWeight.w400,
+    letterSpacing: -0.08,
+    color: AppColors.textSecondary,
   );
   
   // Labels
   static const TextStyle label = TextStyle(
-    fontFamily: 'Roboto',
     fontSize: 12,
-    fontWeight: FontWeight.normal,
+    fontWeight: FontWeight.w500,
+    letterSpacing: 0,
     color: AppColors.textSecondary,
   );
 
   // Body Small
   static const TextStyle bodySmall = TextStyle(
-    fontFamily: 'Roboto',
     fontSize: 12,
-    fontWeight: FontWeight.normal,
+    fontWeight: FontWeight.w400,
+    letterSpacing: 0,
     color: AppColors.textSecondary,
   );
 }
 
-/// UI Constants
+/// UI Constants - iOS Design System
 class AppConstants {
-  // Border Radius
-  static const double cardBorderRadius = 16.0;
-  static const double buttonBorderRadius = 8.0;
+  // Border Radius - iOS style rounded corners
+  static const double cardBorderRadius = 12.0;
+  static const double buttonBorderRadius = 10.0;
+  static const double smallBorderRadius = 8.0;
   
-  // Spacing
+  // Spacing - iOS 8-point grid
+  static const double spacingXXS = 2.0;
   static const double spacingXS = 4.0;
   static const double spacingS = 8.0;
   static const double spacingM = 16.0;
   static const double spacingL = 24.0;
   static const double spacingXL = 32.0;
+  static const double spacingXXL = 40.0;
   
-  // Elevation
-  static const double cardElevation = 2.0;
+  // Elevation - Subtle shadows like iOS
+  static const double cardElevation = 1.0;
   
   // Animation Duration
   static const Duration animationDuration = Duration(milliseconds: 300);
