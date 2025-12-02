@@ -564,10 +564,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
   }
 
   Widget _buildReports() {
-    return ReportsScreen(
-      monthlySalary: widget.monthlySalary,
-      currency: widget.currency,
-    );
+    return const ReportsScreen();
   }
 
   Widget _buildSettings() {

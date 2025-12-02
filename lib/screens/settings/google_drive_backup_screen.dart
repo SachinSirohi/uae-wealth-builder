@@ -389,7 +389,7 @@ class _GoogleDriveBackupScreenState extends State<GoogleDriveBackupScreen> {
             const SizedBox(height: AppConstants.spacingS),
             Text(
               'To use Google Drive backup, please sign in with your Google account from the app settings or during onboarding.',
-              style: AppTextStyles.body.copyWith(
+              style: AppTextStyles.bodyMedium.copyWith(
                 color: AppColors.textSecondary,
               ),
               textAlign: TextAlign.center,
@@ -527,7 +527,7 @@ class _GoogleDriveBackupScreenState extends State<GoogleDriveBackupScreen> {
                     const SizedBox(height: AppConstants.spacingS),
                     Text(
                       'No backups yet',
-                      style: AppTextStyles.body.copyWith(
+                      style: AppTextStyles.bodyMedium.copyWith(
                         color: AppColors.textSecondary,
                       ),
                     ),

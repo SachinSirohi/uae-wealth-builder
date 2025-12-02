@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:local_auth/local_auth.dart';
-import '../constants/app_constants.dart';
+import '../../constants/app_constants.dart';
 
 /// App lock screen with biometric and PIN authentication
 class AppLockScreen extends StatefulWidget {

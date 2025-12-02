@@ -370,7 +370,8 @@ class CloudBackupManager {
 
   /// Perform auto-backup if due
   static Future<CloudBackupResult?> performAutoBackupIfDue() async {
-    if (!isConnected) return null;
+    // TODO: Implement connectivity check
+    // if (!isConnected) return null;
 
     final isDue = await isAutoBackupDue();
     if (!isDue) return null;

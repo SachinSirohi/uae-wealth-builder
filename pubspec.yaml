@@ -23,7 +23,7 @@ dependencies:
   
   # Notifications & Background Service
   flutter_local_notifications: ^17.2.2
-  workmanager: ^0.5.2
+  workmanager: ^0.6.0
   
   # SMS Parsing (Android)
   telephony: ^0.2.0
@@ -78,6 +78,10 @@ flutter:
   # included with your application, so that you can use the icons in
   # the material Icons class.
   uses-material-design: true
+
+  # App assets including logo
+  assets:
+    - Logo/logo.png
 
   # To add assets to your application, add an assets section, like this:
   # assets:
