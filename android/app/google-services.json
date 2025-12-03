@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "13716623992",
+    "project_id": "wealth-builder-e32d2",
+    "storage_bucket": "wealth-builder-e32d2.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:13716623992:android:0a84f844f49122d8d2938d",
+        "android_client_info": {
+          "package_name": "com.wealthbuilder.personal_finance_uae"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAdEdsu3S5vpBV_Yv8ffIcAvSogQiB7nU0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
