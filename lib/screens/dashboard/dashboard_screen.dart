@@ -6,6 +6,7 @@ import '../../widgets/stat_card.dart';
 import '../../widgets/budget_progress_card.dart';
 import '../../widgets/alert_card.dart';
 import '../../services/database_service.dart';
+import '../../services/invoice_scanner_service.dart';
 import '../../models/transaction.dart';
 import '../../utils/page_transitions.dart';
 import 'transaction_list_screen.dart';
@@ -37,6 +38,7 @@ class DashboardScreen extends StatefulWidget {
 class _DashboardScreenState extends State<DashboardScreen> {
   int _selectedIndex = 0;
   final DatabaseService _databaseService = DatabaseService();
+  final InvoiceScannerService _invoiceScanner = InvoiceScannerService();
   final NumberFormat _currencyFormat = NumberFormat('#,##0');
 
   double _netWorth = 0;
@@ -111,6 +113,76 @@ class _DashboardScreenState extends State<DashboardScreen> {
       }
     });
   }
+
+  Future<void> _scanReceipt() async {
+    try {
+      // Show loading indicator
+      showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (context) => const Center(
+          child: CircularProgressIndicator(),
+        ),
+      );
+
+      final result = await _invoiceScanner.scanInvoice();
+      
+      // Close loading dialog
+      if (mounted) Navigator.pop(context);
+      
+      if (result == null) {
+        // User cancelled
+        return;
+      }
+
+      // Create transaction from scanned data
+      final transaction = Transaction(
+        id: DateTime.now().millisecondsSinceEpoch.toString(),
+        description: result.merchantName,
+        merchant: result.merchantName,
+        amount: -result.amount,
+        date: result.date,
+        category: TransactionCategory.uncategorized,
+        rawText: result.rawText,
+        isIncome: false,
+        confirmed: false,
+      );
+
+      // Add to database
+      await _databaseService.addTransaction(transaction);
+      
+      // Reload data
+      _loadData();
+
+      // Show success message
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              'Receipt scanned: AED ${_currencyFormat.format(result.amount)}',
+            ),
+            backgroundColor: Colors.green,
+            behavior: SnackBarBehavior.floating,
+          ),
+        );
+      }
+    } catch (e) {
+      // Close loading dialog if still open
+      if (mounted) Navigator.pop(context);
+      
+      // Show error message
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Error scanning receipt: $e'),
+            backgroundColor: Colors.red,
+            behavior: SnackBarBehavior.floating,
+          ),
+        );
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -124,6 +196,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
             child: AppBar(
               elevation: 0,
               backgroundColor: AppColors.surface.withOpacity(0.8),
+              leading: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Image.asset(
+                  'Logo/logo.png',
+                  fit: BoxFit.contain,
+                ),
+              ),
               title: Text(
                 'Wealth Builder',
                 style: AppTextStyles.heading2.copyWith(
@@ -152,6 +231,14 @@ class _DashboardScreenState extends State<DashboardScreen> {
           : _selectedIndex == 1
               ? _buildReports()
               : _buildSettings(),
+      floatingActionButton: _selectedIndex == 0
+          ? FloatingActionButton.extended(
+              onPressed: _scanReceipt,
+              icon: const Icon(Icons.document_scanner),
+              label: const Text('Scan Receipt'),
+              backgroundColor: AppColors.primary,
+            )
+          : null,
       bottomNavigationBar: Container(
         decoration: BoxDecoration(
           border: Border(
