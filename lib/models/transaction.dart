@@ -1,4 +1,5 @@
 import 'package:hive/hive.dart';
+import 'package:flutter/material.dart';
 
 part 'transaction.g.dart';
 
@@ -151,6 +152,39 @@ extension TransactionCategoryExtension on TransactionCategory {
       
       case TransactionCategory.uncategorized:
         return BudgetType.needs; // Default to needs
+    }
+  }
+
+  IconData get icon {
+    switch (this) {
+      case TransactionCategory.housing:
+        return Icons.home;
+      case TransactionCategory.groceries:
+        return Icons.shopping_cart;
+      case TransactionCategory.utilities:
+        return Icons.bolt;
+      case TransactionCategory.transport:
+        return Icons.directions_car;
+      case TransactionCategory.medical:
+        return Icons.local_hospital;
+      case TransactionCategory.insurance:
+        return Icons.shield;
+      case TransactionCategory.dining:
+        return Icons.restaurant;
+      case TransactionCategory.entertainment:
+        return Icons.movie;
+      case TransactionCategory.shopping:
+        return Icons.shopping_bag;
+      case TransactionCategory.subscriptions:
+        return Icons.subscriptions;
+      case TransactionCategory.travel:
+        return Icons.flight;
+      case TransactionCategory.income:
+        return Icons.attach_money;
+      case TransactionCategory.investments:
+        return Icons.trending_up;
+      case TransactionCategory.uncategorized:
+        return Icons.category;
     }
   }
 }

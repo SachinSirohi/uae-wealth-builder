@@ -177,8 +177,8 @@ class _ReviewScannedReceiptScreenState extends State<ReviewScannedReceiptScreen>
                       Container(
                         height: 200,
                         decoration: BoxDecoration(
-                          border: Border.all(color: AppColors.border),
-                          borderRadius: BorderRadius.circular(AppConstants.radiusM),
+                          border: Border.all(color: AppColors.cardBorder),
+                          borderRadius: BorderRadius.circular(AppConstants.cardBorderRadius),
                         ),
                         child: const Center(
                           child: Icon(Icons.receipt_long, size: 64, color: AppColors.textSecondary),
@@ -238,7 +238,7 @@ class _ReviewScannedReceiptScreenState extends State<ReviewScannedReceiptScreen>
                 labelText: 'Amount (AED)',
                 prefixText: 'AED ',
                 border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(AppConstants.radiusM),
+                  borderRadius: BorderRadius.circular(AppConstants.cardBorderRadius),
                 ),
                 filled: true,
                 fillColor: AppColors.surface,
@@ -268,7 +268,7 @@ class _ReviewScannedReceiptScreenState extends State<ReviewScannedReceiptScreen>
               decoration: InputDecoration(
                 labelText: 'Merchant / Description',
                 border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(AppConstants.radiusM),
+                  borderRadius: BorderRadius.circular(AppConstants.cardBorderRadius),
                 ),
                 filled: true,
                 fillColor: AppColors.surface,
@@ -288,7 +288,7 @@ class _ReviewScannedReceiptScreenState extends State<ReviewScannedReceiptScreen>
               decoration: InputDecoration(
                 labelText: 'Category',
                 border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(AppConstants.radiusM),
+                  borderRadius: BorderRadius.circular(AppConstants.cardBorderRadius),
                 ),
                 filled: true,
                 fillColor: AppColors.surface,
@@ -322,7 +322,7 @@ class _ReviewScannedReceiptScreenState extends State<ReviewScannedReceiptScreen>
                 decoration: InputDecoration(
                   labelText: 'Date',
                   border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(AppConstants.radiusM),
+                    borderRadius: BorderRadius.circular(AppConstants.cardBorderRadius),
                   ),
                   filled: true,
                   fillColor: AppColors.surface,
@@ -330,7 +330,7 @@ class _ReviewScannedReceiptScreenState extends State<ReviewScannedReceiptScreen>
                 ),
                 child: Text(
                   DateFormat('MMM dd, yyyy').format(_selectedDate),
-                  style: AppTextStyles.bodyText1,
+                  style: AppTextStyles.bodyMedium,
                 ),
               ),
             ),
@@ -342,7 +342,7 @@ class _ReviewScannedReceiptScreenState extends State<ReviewScannedReceiptScreen>
               decoration: InputDecoration(
                 labelText: 'Notes (Optional)',
                 border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(AppConstants.radiusM),
+                  borderRadius: BorderRadius.circular(AppConstants.cardBorderRadius),
                 ),
                 filled: true,
                 fillColor: AppColors.surface,
@@ -360,7 +360,7 @@ class _ReviewScannedReceiptScreenState extends State<ReviewScannedReceiptScreen>
                     style: OutlinedButton.styleFrom(
                       padding: const EdgeInsets.symmetric(vertical: 16),
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(AppConstants.radiusM),
+                        borderRadius: BorderRadius.circular(AppConstants.cardBorderRadius),
                       ),
                     ),
                     child: const Text('Cancel'),
@@ -375,7 +375,7 @@ class _ReviewScannedReceiptScreenState extends State<ReviewScannedReceiptScreen>
                       backgroundColor: AppColors.primary,
                       padding: const EdgeInsets.symmetric(vertical: 16),
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(AppConstants.radiusM),
+                        borderRadius: BorderRadius.circular(AppConstants.cardBorderRadius),
                       ),
                     ),
                     child: Text(

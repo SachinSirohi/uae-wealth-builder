@@ -61,10 +61,16 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
     if (!mounted) return;
     
     if (isSetupComplete && settings != null) {
-      // Navigate to Dashboard with salary from settings
+      // Navigate to Dashboard with settings data
       Navigator.of(context).pushReplacement(
         MaterialPageRoute(
-          builder: (context) => DashboardScreen(monthlySalary: settings.monthlySalary),
+          builder: (context) => DashboardScreen(
+            userName: settings.name,
+            userEmail: settings.email,
+            monthlySalary: settings.monthlySalary,
+            emergencyFundGoal: settings.emergencyFundGoal,
+            currency: settings.currency,
+          ),
         ),
       );
     } else {
