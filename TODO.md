@@ -1130,5 +1130,300 @@ This is a personal project, but suggestions and bug reports are welcome!
 
 ---
 
+## 🎯 New User Onboarding Setup Process
+
+### UAE Wealth Builder – Onboarding Prompt Spec
+
+#### Role & Objective
+
+You are designing the **user onboarding flow** for **UAE Wealth Builder**, a **privacy-first, fully on-device personal finance app** for UAE residents.
+
+Your goal:
+- Make onboarding **goal-first** (start from "what the user wants").
+- Keep the flow **as short and simple as possible** (≤ 4–5 screens).
+- Collect **only essential data** needed to:
+  - Build a basic **40/20/40 budget envelope**.
+  - Set up **1–3 financial goals**.
+  - Show **clear gaps** between current situation and goals.
+- Respect that **all features are processed on-device**, with **no server access** and **no external APIs**, except optional **encrypted Google Drive backup**.
+
+---
+
+#### Constraints & Principles
+
+- **Privacy-first**:
+  - No account creation on a custom backend.
+  - No bank connections, open banking APIs, or external data fetches.
+  - All calculations and logic are done on-device.
+  - Optional Google account is used **only** for encrypted backup to Google Drive.
+- **Goal-focused**:
+  - Onboarding should start from **"What do you want to achieve?"**, not from detailed forms.
+  - Primary concept is: **goals → budget → tracking**, not "fill your profile."
+- **Progressive disclosure**:
+  - Ask for **minimum required inputs only**.
+  - Defer advanced configuration (categories fine-tuning, custom rules, etc.) until after onboarding.
+- **Simplicity**:
+  - Single number for **investments** (total), not per-product detail.
+  - Avoid jargon. Use plain language in all copy.
+  - User should reach the first meaningful dashboard view in **under 2 minutes**.
+
+---
+
+#### Data To Collect During Onboarding
+
+Collect **only** the following fields:
+
+1. **Monthly income (required)**
+   - Single numeric input.
+   - Represents total monthly income (salary + side income).
+   - Used to calculate default 40/20/40 envelopes:
+     - Needs = 40% of income
+     - Savings = 20% of income
+     - Wants = 40% of income
+
+2. **Top financial goals (at least one required)**
+   - User can select 1–3 goals from preset options and/or define a custom goal.
+   - Preset goals:
+     - Emergency Fund (auto-target based on income).
+     - Wealth Growth (net worth / investments increase).
+     - Major Purchase (e.g., home, car, travel, education).
+   - Custom goal:
+     - User can specify a name and target amount.
+
+3. **Current snapshot (optional but encouraged)**
+   - **Current savings total** (one number).
+   - **Current investments total** (one number: all investments combined).
+
+4. **Permissions & backup**
+   - SMS/notification read permission (for auto-parsing transactions).
+   - Optional Google account link for encrypted backup.
+
+No other inputs (no detailed investment breakdown, no category-level setup, no KYC-like data).
+
+---
+
+#### Screen Flow Overview
+
+Design a **4–5 screen flow**:
+
+1. **Welcome & Privacy / Permission**
+2. **Monthly Income & Envelope Preview**
+3. **Goal Selection (Top 1–3 Goals)**
+4. **Current Snapshot (Savings & Investments – optional)**
+5. **Summary & First Dashboard Preview**
+
+Each screen should have:
+- A clear **title**.
+- A short **subtitle** that explains why the step matters.
+- Minimal content that can be understood in **< 5 seconds**.
+- One primary CTA (and, where needed, a secondary "Skip for now").
+
+---
+
+#### Screen 1 – Welcome & Privacy
+
+**Purpose**: Introduce the app, set the tone (goals + privacy), and get permission to read SMS/notifications.
+
+**Content guidelines:**
+- Title focuses on **control and clarity**, e.g.:
+  - "Your Money, Your Rules"
+- Subtitle focuses on benefits:
+  - "Track goals. See where you're falling behind. All on your device."
+- Short privacy reassurance:
+  - Emphasize: "No bank connections. No servers. Your data stays on this phone."
+- CTA:
+  - Primary: "Let's Start"
+- Actions:
+  - After tapping CTA, show a minimal explanation and trigger SMS/notification permission request.
+
+---
+
+#### Screen 2 – Monthly Income & 40/20/40 Preview
+
+**Purpose**: Collect a single income number and immediately show how it translates into a budget envelope.
+
+**Inputs:**
+- One numeric field: **Monthly Income (AED)**.
+  - Placeholder: "e.g., 8,500"
+  - Helper text: "Estimate an average if it changes each month. You can edit this later."
+
+**Real-time calculation & display:**
+- As the user types income, show live envelope preview:
+  - Needs (40%): calculated amount.
+  - Savings (20%): calculated amount.
+  - Wants (40%): calculated amount.
+- Visual:
+  - A simple ring or bar segmented into "Needs / Savings / Wants."
+  - Labels with AED amounts.
+
+**Copy suggestions:**
+- Title: "What's your monthly income?"
+- Subtitle: "This helps us calculate your starting budget."
+- Under preview, a short note:
+  - "You can customize this later. For now, we'll start with the 40/20/40 rule."
+
+**CTA:**
+- Primary: "Next"
+- Validation: require a positive number; show gentle inline error if invalid.
+
+---
+
+#### Screen 3 – Choose Your Top Goals
+
+**Purpose**: Make the experience personal by asking what the user cares about, then automatically set or ask for goal targets.
+
+**Layout:**
+- Title: "What are you working towards?"
+- Subtitle: "Pick 1–3 goals. We'll track your progress and show where you're behind."
+
+**Goal cards (tappable, multi-select):**
+
+1. **Emergency Fund (preset)**
+   - Shows an auto-calculated target:
+     - "Suggested target: 6 months of Needs = [auto-calc from income]."
+   - Description:
+     - "Protect yourself against surprises."
+   - Selection:
+     - Tapping toggles selection.
+
+2. **Wealth Growth (preset)**
+   - Description:
+     - "Grow your net worth and investments over time."
+   - Target:
+     - Can be left open or allow user to add a custom target later.
+
+3. **Major Purchase (preset)**
+   - Description:
+     - "Home, car, travel, education, or any big goal."
+   - On select:
+     - Ask for a simple target amount in a lightweight field:
+       - "Target amount (AED)" (optional; can be set later).
+
+4. **Custom Goal**
+   - Collapsible card.
+   - Fields:
+     - Name: free text (e.g., "Wedding," "Debt Free," etc.).
+     - Target amount (AED): optional; can be empty.
+
+**Behavior:**
+- Require at least **one goal** to proceed.
+- Allow up to 3 selected for clarity and focus.
+
+**CTA:**
+- Primary: "Continue"
+- Disabled until at least one goal is selected.
+
+---
+
+#### Screen 4 – Current Snapshot (Optional)
+
+**Purpose**: Get a simple baseline to show progress and gaps from day one.
+
+**Title**: "Where are you today?"
+**Subtitle**: "This helps us show how far you are from your goals."
+
+**Inputs (both optional):**
+- Current savings total (AED)
+- Current investments total (AED)
+
+**Copy:**
+- Helper text:
+  - "Rough numbers are fine. You can update these anytime."
+- CTA:
+  - Primary: "Next"
+  - Secondary (link-style): "Skip for now"
+
+If fields are left empty:
+- Treat them as zero; don't block progress.
+
+---
+
+#### Screen 5 – Summary & First Dashboard Preview
+
+**Purpose**: Show immediate value by summarizing:
+- The monthly envelope.
+- The selected goals.
+- Where the user stands right now vs. those goals.
+
+**Content:**
+- Title: "You're all set."
+- Subtitle: "Here's your starting point."
+
+**Summary sections:**
+
+1. **Monthly Budget (from income):**
+   - Needs (40%): AED amount.
+   - Savings (20%): AED amount.
+   - Wants (40%): AED amount.
+
+2. **Goals Overview:**
+   For each selected goal:
+   - Name.
+   - Target amount:
+     - For Emergency Fund: auto-calculated.
+     - For others: either the user's target or "Target: not set yet."
+   - Current progress:
+     - Use savings + investments totals as the combined "wealth base" and map to goals (even if approximate).
+   - A short insight line:
+     - Example: "You're behind your savings goal by AED X per month at your current setup."
+     - Or: "If you save AED Y per month, you can reach this goal in about Z months."
+
+**CTA:**
+- Primary: "Go to Dashboard"
+
+---
+
+#### After Onboarding – First Dashboard Requirements
+
+When the user lands on the dashboard for the first time:
+
+- Show **3 key elements** above the fold:
+  1. **Free to Spend / Remaining This Month**:
+     - A simple summary: "You have AED X left this month across all categories."
+  2. **Goal Progress Cards** for the selected goals:
+     - Progress bar or ring.
+     - Current vs. target.
+     - Simple time-to-goal estimate if possible.
+  3. **Budget Snapshot**:
+     - Needs / Savings / Wants + how much is left in each.
+
+- Avoid deep configuration screens.
+- Provide a single, prominent CTA:
+  - Example: "Review recent transactions" or "Connect your SMS to start tracking automatically" (depending on permission state).
+
+---
+
+#### Tone & Copy Guidelines
+
+- Short, positive, and non-judgmental.
+- Focus on **progress and clarity**, not shame or fear.
+- Examples of voice:
+  - "Let's see how close you are to your goals."
+  - "We'll keep an eye on your budget and highlight where you're falling behind."
+  - "Small consistent steps lead to big results."
+
+Avoid:
+- Technical jargon (APY, CAGR, etc.) during onboarding.
+- Overloading the user with charts or options.
+
+---
+
+#### Implementation Notes (For Developers)
+
+- Persist onboarding data locally (e.g., Hive) as a minimal model:
+  - `monthlyIncome`
+  - `currentSavings`
+  - `currentInvestments`
+  - `goals[]` (id, name, targetAmount, createdAt)
+  - `onboardingCompletedAt`
+- Use this data to:
+  - Calculate 40/20/40 envelopes.
+  - Initialize goal progress and time-to-goal estimates.
+  - Drive the first dashboard view and goal insights.
+
+- All calculations must be fully **offline**, using only the stored values and SMS-parsed transactions available on-device.
+
+---
+
 *Last Updated: December 3, 2024*  
 *This TODO list will be regularly updated as features are completed and new requirements emerge.*
