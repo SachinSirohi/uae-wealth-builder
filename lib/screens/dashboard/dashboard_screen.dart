@@ -14,6 +14,7 @@ import '../reports/reports_screen.dart';
 import '../settings/settings_screen.dart';
 import '../insights/insights_screen.dart';
 import '../budget/budget_screen.dart';
+import '../transactions/review_scanned_receipt_screen.dart';
 
 class DashboardScreen extends StatefulWidget {
   final String userName;
@@ -135,40 +136,26 @@ class _DashboardScreenState extends State<DashboardScreen> {
         return;
       }
 
-      // Create transaction from scanned data
-      final transaction = Transaction(
-        id: DateTime.now().millisecondsSinceEpoch.toString(),
-        description: result.merchantName,
-        merchant: result.merchantName,
-        amount: -result.amount,
-        date: result.date,
-        category: TransactionCategory.uncategorized,
-        rawText: result.rawText,
-        isIncome: false,
-        confirmed: false,
+      // Navigate to review screen
+      if (!mounted) return;
+      
+      final saved = await Navigator.of(context).push<bool>(
+        MaterialPageRoute(
+          builder: (context) => ReviewScannedReceiptScreen(
+            scannedData: result,
+          ),
+        ),
       );
 
-      // Add to database
-      await _databaseService.addTransaction(transaction);
-      
-      // Reload data
-      _loadData();
-
-      // Show success message
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(
-              'Receipt scanned: AED ${_currencyFormat.format(result.amount)}',
-            ),
-            backgroundColor: Colors.green,
-            behavior: SnackBarBehavior.floating,
-          ),
-        );
+      // Reload data if transaction was saved
+      if (saved == true && mounted) {
+        _loadData();
       }
     } catch (e) {
       // Close loading dialog if still open
-      if (mounted) Navigator.pop(context);
+      if (mounted) {
+        Navigator.of(context).popUntil((route) => route.isFirst);
+      }
       
       // Show error message
       if (mounted) {

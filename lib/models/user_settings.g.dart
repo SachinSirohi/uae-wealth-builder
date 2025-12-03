@@ -27,13 +27,16 @@ class UserSettingsAdapter extends TypeAdapter<UserSettings> {
       backupEnabled: fields[7] as bool,
       lastBackupDate: fields[8] as DateTime?,
       customRules: (fields[9] as Map?)?.cast<String, String>(),
+      autoBackupEnabled: fields[10] as bool?,
+      notificationsEnabled: fields[11] as bool?,
+      isSetupCompleted: fields[12] as bool,
     );
   }
 
   @override
   void write(BinaryWriter writer, UserSettings obj) {
     writer
-      ..writeByte(10)
+      ..writeByte(13)
       ..writeByte(0)
       ..write(obj.name)
       ..writeByte(1)
@@ -53,7 +56,13 @@ class UserSettingsAdapter extends TypeAdapter<UserSettings> {
       ..writeByte(8)
       ..write(obj.lastBackupDate)
       ..writeByte(9)
-      ..write(obj.customRules);
+      ..write(obj.customRules)
+      ..writeByte(10)
+      ..write(obj.autoBackupEnabled)
+      ..writeByte(11)
+      ..write(obj.notificationsEnabled)
+      ..writeByte(12)
+      ..write(obj.isSetupCompleted);
   }
 
   @override

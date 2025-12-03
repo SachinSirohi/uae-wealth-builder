@@ -62,6 +62,18 @@ class _OnboardingWizardScreenState extends State<OnboardingWizardScreen> {
   }
 
   Future<void> _finishOnboarding() async {
+    // Save user settings and mark setup as completed
+    final settingsBox = await Hive.openBox<UserSettings>('userSettings');
+    final settings = UserSettings(
+      name: _userName,
+      email: _userEmail,
+      monthlySalary: double.tryParse(_salaryController.text.replaceAll(',', '')) ?? 15000,
+      emergencyFundGoal: (double.tryParse(_salaryController.text.replaceAll(',', '')) ?? 15000) * _emergencyMultiplier,
+      currency: _selectedCurrency,
+      isSetupCompleted: true, // Mark setup as completed
+    );
+    await settingsBox.put('settings', settings);
+    
     // Initialize background service if permissions granted
     if (_smsAccess) {
       await BackgroundService.initialize();

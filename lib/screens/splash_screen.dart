@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
+import 'package:hive_flutter/hive_flutter.dart';
 import '../constants/app_constants.dart';
+import '../models/user_settings.dart';
 import 'onboarding/onboarding_wizard_screen.dart';
+import 'dashboard/dashboard_screen.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -40,14 +43,36 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
 
     _controller.forward();
 
-    // Navigate to onboarding after 3 seconds
+    // Navigate after 3 seconds based on setup status
     Timer(const Duration(seconds: 3), () {
       if (mounted) {
-        Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (context) => const OnboardingWizardScreen()),
-        );
+        _navigateToNextScreen();
       }
     });
+  }
+
+  Future<void> _navigateToNextScreen() async {
+    // Check if setup is completed
+    final settingsBox = await Hive.openBox<UserSettings>('userSettings');
+    final settings = settingsBox.get('settings');
+    
+    final bool isSetupComplete = settings?.isSetupCompleted ?? false;
+    
+    if (!mounted) return;
+    
+    if (isSetupComplete && settings != null) {
+      // Navigate to Dashboard with salary from settings
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(
+          builder: (context) => DashboardScreen(monthlySalary: settings.monthlySalary),
+        ),
+      );
+    } else {
+      // Navigate to Onboarding
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(builder: (context) => const OnboardingWizardScreen()),
+      );
+    }
   }
 
   @override

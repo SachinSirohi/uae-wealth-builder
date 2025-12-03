@@ -40,6 +40,9 @@ class UserSettings extends HiveObject {
   @HiveField(11)
   bool? notificationsEnabled;
 
+  @HiveField(12)
+  bool isSetupCompleted;
+
   UserSettings({
     this.name = '',
     this.email = '',
@@ -53,6 +56,7 @@ class UserSettings extends HiveObject {
     Map<String, String>? customRules,
     this.autoBackupEnabled,
     this.notificationsEnabled,
+    this.isSetupCompleted = false,
   })  : emergencyFundGoal = emergencyFundGoal ?? (monthlySalary * 6),
         budgetAllocations = budgetAllocations ?? _defaultBudgetAllocations(),
         customRules = customRules ?? {};
