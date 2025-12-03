@@ -1,60 +1,4 @@
-import '../../services/invoice_scanner_service.dart';
-
-// ... (existing imports)
-
-// Inside _DashboardScreenState
-  final InvoiceScannerService _scannerService = InvoiceScannerService();
-
-  @override
-  void dispose() {
-    _scannerService.dispose();
-    super.dispose();
-  }
-
-// ... (inside _showScanOptions)
-              onTap: () async {
-                Navigator.pop(context);
-                final invoice = await _scannerService.scanInvoice();
-                if (invoice != null && mounted) {
-                  // Show result dialog or navigate to edit screen
-                  _showScannedInvoiceDialog(context, invoice);
-                }
-              },
-
-// ... (add _showScannedInvoiceDialog method)
-  void _showScannedInvoiceDialog(BuildContext context, ScannedInvoice invoice) {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Scanned Receipt'),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text('Merchant: ${invoice.merchantName}'),
-            Text('Amount: ${widget.currency} ${invoice.amount}'),
-            Text('Date: ${DateFormat('dd/MM/yyyy').format(invoice.date)}'),
-          ],
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('Cancel'),
-          ),
-          ElevatedButton(
-            onPressed: () {
-              // TODO: Save transaction
-              Navigator.pop(context);
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('Transaction Saved!')),
-              );
-            },
-            child: const Text('Save'),
-          ),
-        ],
-      ),
-    );
-  }
+import 'package:flutter/material.dart';
 import 'dart:ui';
 import 'package:intl/intl.dart';
 import '../../constants/app_constants.dart';
@@ -208,17 +152,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
           : _selectedIndex == 1
               ? _buildReports()
               : _buildSettings(),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: () async {
-          // TODO: Implement Scan Logic
-          // For now, we'll just show a placeholder dialog or navigate
-          // We need to import the service first, but let's just add the button UI first
-           _showScanOptions(context);
-        },
-        label: const Text('Scan Receipt'),
-        icon: const Icon(Icons.camera_alt),
-        backgroundColor: AppColors.primary,
-      ),
       bottomNavigationBar: Container(
         decoration: BoxDecoration(
           border: Border(
@@ -260,61 +193,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
               activeIcon: Icon(Icons.settings),
               label: 'Settings',
             ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  void _showScanOptions(BuildContext context) {
-    showModalBottomSheet(
-      context: context,
-      backgroundColor: Colors.transparent,
-      builder: (context) => Container(
-        padding: const EdgeInsets.all(AppConstants.spacingL),
-        decoration: const BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text('Add Transaction', style: AppTextStyles.heading2),
-            const SizedBox(height: AppConstants.spacingL),
-            ListTile(
-              leading: Container(
-                padding: const EdgeInsets.all(10),
-                decoration: BoxDecoration(
-                  color: AppColors.primary.withOpacity(0.1),
-                  shape: BoxShape.circle,
-                ),
-                child: const Icon(Icons.camera_alt, color: AppColors.primary),
-              ),
-              title: const Text('Scan Receipt'),
-              subtitle: const Text('Auto-extract details from photo'),
-              onTap: () async {
-                Navigator.pop(context);
-                // TODO: Call InvoiceScannerService
-                // We'll implement the integration in the next step
-              },
-            ),
-            ListTile(
-              leading: Container(
-                padding: const EdgeInsets.all(10),
-                decoration: BoxDecoration(
-                  color: AppColors.secondary.withOpacity(0.1),
-                  shape: BoxShape.circle,
-                ),
-                child: const Icon(Icons.edit, color: AppColors.secondary),
-              ),
-              title: const Text('Manual Entry'),
-              subtitle: const Text('Type transaction details'),
-              onTap: () {
-                Navigator.pop(context);
-                // TODO: Navigate to manual entry
-              },
-            ),
-            const SizedBox(height: AppConstants.spacingL),
           ],
         ),
       ),
@@ -640,6 +518,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
   }
 
   Widget _buildRecentTransactions() {
+    final recentTransactions = _databaseService.getRecentTransactions(3);
+    final hasTransactions = recentTransactions.isNotEmpty;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -668,24 +549,28 @@ class _DashboardScreenState extends State<DashboardScreen> {
             padding: const EdgeInsets.all(AppConstants.spacingM),
             child: Column(
               children: [
-                if (_databaseService.getTransactions().isEmpty)
+                if (!hasTransactions)
                   const Padding(
                     padding: EdgeInsets.all(AppConstants.spacingM),
                     child: Text('No recent transactions'),
                   )
                 else
-                  ..._databaseService.getRecentTransactions(3).map((t) => Column(
-                    children: [
-                      _buildTransactionItem(
-                        t.merchant.isNotEmpty ? t.merchant : 'Unknown',
-                        t.category.displayName,
-                        t.amount,
-                        t.date,
-                        _getCategoryIcon(t.category),
-                      ),
-                      const Divider(),
-                    ],
-                  )).toList()..removeLast(), // Remove last divider
+                  ...List.generate(recentTransactions.length, (index) {
+                    final t = recentTransactions[index];
+                    return Column(
+                      children: [
+                        _buildTransactionItem(
+                          t.merchant.isNotEmpty ? t.merchant : 'Unknown',
+                          t.category.displayName,
+                          t.amount,
+                          t.date,
+                          _getCategoryIcon(t.category),
+                        ),
+                        if (index != recentTransactions.length - 1)
+                          const Divider(),
+                      ],
+                    );
+                  }),
               ],
             ),
           ),
