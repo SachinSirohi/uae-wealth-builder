@@ -51,7 +51,12 @@ dependencies:
   shared_preferences: ^2.3.2
   path_provider: ^2.1.4
   permission_handler: ^11.3.1
+  permission_handler: ^11.3.1
   uuid: ^4.5.1
+  
+  # OCR & Camera
+  google_mlkit_text_recognition: ^0.13.0
+  image_picker: ^1.1.2
 
 dev_dependencies:
   flutter_test:
