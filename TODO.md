@@ -1784,3 +1784,291 @@ Micro-text: 12pt (ETA, %)
 ✅ ML insight click-through: >30%
 
 ---
+
+## 📱 Complete Screen Architecture
+
+# UAE Wealth Builder – Complete Screen Architecture
+
+## Core Screens (MVP - 8 Screens)
+
+### **1. Home/Dashboard** ✅ (Already designed)
+**Purpose**: 5 questions answered at glance + primary actions
+
+### **2. Goal Details** 
+**Path**: Dashboard Goal Card → Tap  
+**Purpose**: Deep dive into single goal + history + actions
+
+```
+┌─────────────────────────────────────┐
+│ 🎯 Emergency Fund                   │
+│ AED 12.5k / AED 51.2k  ▓▓░░░ 24%    │
+│ 📅 Est: Dec 2027 (21mo behind)      │
+│                                     │
+│ 📈 Progress Chart (6 months)        │
+│                                     │
+│ 💡 ML Insight: Need +AED 1,200/mo   │
+│                                     │
+│ [+ Contribute Now] [Edit Target]    │
+└─────────────────────────────────────┘
+```
+
+### **3. Transactions List**
+**Path**: Dashboard → "View All" / FAB → Quick Add  
+**Purpose**: Full transaction management + search/filter
+
+```
+┌─────────────────────────────────────┐
+│ Transactions (This Month: 47)       │
+│ [Filter: All | Income | Expenses]   │
+│ [Search icon]                       │
+└─────────────────────────────────────┘
+│ AED 150  Lulu  Groceries   📅 Today │
+│ AED 75   Talabat Dining    2h ago   │
+│ AED 2,500 Salary Income    Yday     │
+└─────────────────────────────────────┘
+[+ Add Transaction]
+```
+
+### **4. Envelope Breakdown**
+**Path**: Dashboard Budget Card → Tap  
+**Purpose**: Category-level spending + adjustments
+
+```
+┌─────────────────────────────────────┐
+│ 🟢 Needs Envelope (AED 3,400)       │
+│ AED 1,200 remaining (35%)           │
+└─────────────────────────────────────┘
+│ Groceries     AED 850/1,200 ▓▓░░░   │
+│ Rent/Utilities AED 1,200/1,200 ▓▓▓▓ │
+│ Transport     AED 150/400  ▓░░░░    │
+│ [Adjust Envelope] [Add Category]    │
+```
+
+### **5. Add Transaction**
+**Path**: FAB → [+ Add Expense]  
+**Purpose**: Quick entry + ML auto-complete
+
+```
+┌─────────────────────────────────────┐
+│ + Add Transaction                   │
+│                                     │
+│ Amount: AED [2__50_]                │  ← ML suggests from history
+│ Merchant: [L___u Hypermarket]       │
+│ Category: [Groceries ✓]             │  ← ML auto-select
+│ Date: Today 📅                      │
+│ Notes: [Milk, bread, chicken]       │
+│                                     │
+│ [Camera: Scan Receipt] [Save]       │
+└─────────────────────────────────────┘
+```
+
+### **6. Insights Hub**
+**Path**: Dashboard Insights → "View All"  
+**Purpose**: All ML insights + patterns + recommendations
+
+```
+┌─────────────────────────────────────┐
+│ 💡 All Insights (12 active)         │
+│                                     │
+│ ⚠️ 1. Dining overspent AED 450      │
+│ 🔄 2. Etisalat recurring detected   │
+│ ✅ 3. +12% savings vs avg           │
+│ 💡 4. Move AED 200 Wants → Savings  │
+│ 📈 5. Groceries trending down 8%    │
+│                                     │
+│ [Dismiss All] [Regenerate]          │
+└─────────────────────────────────────┘
+```
+
+---
+
+## Secondary Screens (Phase 2 - 6 Screens)
+
+### **7. Reports (PDF Generator)**
+**Path**: Dashboard → Menu → "Monthly Report"  
+**Purpose**: Exportable summaries for sharing/printing
+
+```
+┌─────────────────────────────────────┐
+│ 📊 December 2025 Report             │
+│                                     │
+│ 💰 Net Worth: AED 47,500 (+4.2%)    │
+│ 📈 Savings Rate: 18% (target 20%)   │
+│ 🎯 Emergency Fund: 24% complete     │
+│                                     │
+│ [Preview PDF] [Share] [Custom Date] │
+└─────────────────────────────────────┘
+```
+
+### **8. Settings**
+**Path**: Top-right Avatar → Settings  
+**Purpose**: App configuration + backup + privacy
+
+```
+┌─────────────────────────────────────┐
+│ Settings                            │
+├─────────────────────────────────────┤
+│ 🔐 Security & Privacy               │
+│   -  Biometric lock ✓                │
+│   -  Auto-lock: 5 min                │
+│                                     │
+│ 💾 Backup                           │
+│   -  Google Drive: Linked ✓          │
+│   -  Last backup: 2h ago             │
+│                                     │
+│ ⚙️ SMS Parsing                      │
+│   -  Auto-categorize: On ✓           │
+│   -  Custom rules: 12 active         │
+└─────────────────────────────────────┘
+```
+
+### **9. Receipt Scanner**
+**Path**: FAB → Long press → "Scan Receipt"  
+**Purpose**: ML-powered OCR + auto-fill transaction
+
+```
+┌─────────────────────────────────────┐
+│ 📷 Receipt Detected                 │
+│                                     │
+│ [Camera Preview]                    │
+│                                     │
+│ ML Extracted:                       │
+│ Amount: AED 152.50 ✓                │
+│ Merchant: Lulu Hypermarket ✓        │
+│ Date: 03/12/2025 ✓                  │
+│                                     │
+│ [Confirm & Add] [Retake]            │
+└─────────────────────────────────────┘
+```
+
+---
+
+## Advanced Screens (Phase 3 - 4 Screens)
+
+### **10. Custom Rules Editor**
+**Path**: Settings → SMS Parsing → Custom Rules  
+**Purpose**: Power user transaction automation
+
+```
+┌─────────────────────────────────────┐
+│ Custom Rules (12 active)            │
+│                                     │
+│ 1. Lulu* → Groceries ✓              │
+│ 2. Talabat* → Dining ✓              │
+│ 3. Etisalat → Utilities ✓           │
+│                                     │
+│ [+ Add Rule]                        │
+│ Rule: If merchant contains "Noon"   │
+│ Then category = Shopping            │
+└─────────────────────────────────────┘
+```
+
+### **11. Recurring Bills Manager**
+**Path**: Insights → Recurring detected → Manage  
+**Purpose**: Track + predict recurring expenses
+
+```
+┌─────────────────────────────────────┐
+│ 🔄 Recurring Bills (5 detected)     │
+│                                     │
+│ Etisalat    AED 150  Next: 15-Dec   │
+│ DEWA        AED 450  Next: 20-Dec   │
+│ Netflix     AED 45   Next: 05-Dec   │
+│                                     │
+│ [Pay Now] [Edit Amount] [Skip]      │
+└─────────────────────────────────────┘
+```
+
+### **12. What-If Simulator**
+**Path**: Goal Details → "Simulate Scenarios"  
+**Purpose**: Goal planning + budget optimization
+
+```
+┌─────────────────────────────────────┐
+│ What-If Simulator                   │
+│                                     │
+│ Cut Dining by 20% → +6 months       │
+│ Save +AED 800/mo → +12 months       │
+│ Move Wants → Savings → +9 months    │
+│                                     │
+│ 📈 Visual projection chart          │
+└─────────────────────────────────────┘
+```
+
+---
+
+## Navigation Architecture
+
+### Bottom Nav (5 tabs - MVP):
+```
+┌──────┬──────┬──────┬──────┬──────┐
+│ Home │ Goals │ Trans│ Envelop│ Reports│
+└──────┴──────┴──────┴──────┴──────┘
+```
+
+**Hidden behind modal/drawer:**
+- Settings (Avatar → top-right)
+- Search (Global search bar)
+
+**Alternative (Phase 2):**
+Hamburger Menu (Left drawer):
+```
+┌─────────────────────────────┐
+│ 🏠 Home                     │
+│ 🎯 Goals                    │
+│ 💳 Transactions             │
+│ 📊 Budget                   │
+│ 📈 Reports                  │
+│ ⚙️ Settings                 │
+└─────────────────────────────┘
+```
+
+---
+
+## Screen Priority Matrix
+
+| Priority | Screen | Effort (Days) | User Value | Phase |
+|----------|--------|---------------|------------|-------|
+| **MVP** | 1. Home | 10 | ⭐⭐⭐⭐⭐ | Done |
+| **MVP** | 2. Goal Details | 3 | ⭐⭐⭐⭐ | Week 2 |
+| **MVP** | 3. Transactions | 4 | ⭐⭐⭐⭐⭐ | Week 2 |
+| **MVP** | 4. Envelope Breakdown | 2 | ⭐⭐⭐ | Week 3 |
+| **MVP** | 5. Add Transaction | 3 | ⭐⭐⭐⭐⭐ | Week 3 |
+| **Phase 2** | 6. Insights Hub | 3 | ⭐⭐⭐ | Week 4 |
+| **Phase 2** | 7. Reports | 4 | ⭐⭐⭐ | Week 5 |
+| **Phase 2** | 8. Settings | 2 | ⭐⭐ | Week 5 |
+| **Phase 2** | 9. Receipt Scanner | 5 | ⭐⭐⭐⭐ | Week 6 |
+| **Phase 3** | 10-12. Advanced | 10 | ⭐⭐⭐ | Post-MVP |
+
+---
+
+## Total Development Timeline
+
+- **MVP (8 screens)**: 4-5 weeks
+- **Phase 2 (5 screens)**: +3 weeks
+- **Phase 3 (4 screens)**: +3 weeks
+- **Total**: 10-11 weeks
+
+---
+
+## User Flow Coverage (100% of Features)
+
+✅ Onboarding → Home (complete)  
+✅ Home → All primary actions (FAB, taps)  
+✅ Transactions → Edit/Split/Recurring  
+✅ Goals → Progress tracking + ETA  
+✅ Budget → Envelope adjustments  
+✅ Insights → ML recommendations  
+✅ Reports → PDF export  
+✅ Settings → Privacy + backup  
+✅ Receipt → ML OCR parsing
+
+---
+
+**Recommendation**: Build **MVP 8 screens first**. This covers **90% user value** with **60% effort**. Users get full goal tracking, transaction management, and ML insights within 4 weeks.
+
+**Next**: Detailed spec for **Transactions List** screen (highest priority after Home)?
+
+This architecture follows Copilot Money (goal-first), YNAB (envelope clarity), and Rocket Money (quick actions) patterns while staying 100% on-device. Every screen has a clear purpose and interconnects seamlessly. 🎯
+
+---
