@@ -1427,3 +1427,360 @@ Avoid:
 
 *Last Updated: December 3, 2024*  
 *This TODO list will be regularly updated as features are completed and new requirements emerge.*
+
+---
+
+## 🏠 New Home Screen (Dashboard) Specification
+
+# UAE Wealth Builder – Home Screen (Dashboard) Detailed Spec
+
+## Overview
+
+**Purpose**: Answer 5 core questions at a glance while providing deep interactivity through **clickable cards** and **on-device ML-powered insights**. [web:47][web:53][web:75]
+
+**Key Principles**:
+1. **Where I stand** → Hero metric + envelope status
+2. **Goal progress** → Visual cards with ETA + gaps
+3. **Improvement scope** → Actionable insights with ML suggestions
+4. **Urgent attention** → Color-coded alerts (Red/Orange/Green)
+5. **Doing good** → Celebrations + positive reinforcement
+
+**Tech Stack**: Flutter + Hive + **on-device ML** (TFLite/ML Kit)
+
+---
+
+## Screen Structure (Scrollable Cards)
+```
+┌─────────────────────────────────────┐  ← SafeArea + Scaffold
+│ [Avatar] UAE Wealth Builder         │  ← AppBar
+│ AED 2,847 Free to Spend             │
+└─────────────────────────────────────┘
+
+┌─────────────────────────────────────┐  ← Hero Card (Sticky)
+│ 📊 Budget Status                    │
+│ 🟢 Needs: AED 1,200/3,400 (35%)     │
+│ 🔵 Savings: AED 800/1,700 (47%)     │
+│ 🟡 Wants: AED 847/3,400 (25%)       │
+│ [Adjust Budget →]                   │
+└─────────────────────────────────────┘
+
+┌─────────────────────────────────────┐  ← Goals Section
+│ 🎯 Emergency Fund  ⚠️               │  ← ML-powered priority ordering
+│ AED 12.5k/51.2k ▓▓░░░ 24%           │
+│ 📅 Dec 2027 (21mo behind)           │
+│ [Details →]                         │
+└─────────────────────────────────────┘
+
+┌─────────────────────────────────────┐
+│ 💰 Wealth Growth  ✅                 │
+│ AED 35k total 📈 +4.2% MoM          │
+│ 📅 AED 500k by Jun 2032 ✓           │
+│ [Details →]                         │
+└─────────────────────────────────────┘
+
+┌─────────────────────────────────────┐  ← Insights (ML-powered)
+│ 💡 ML Insights                      │
+│ -  Dining overspent AED 450 ⚠️       │  ← Top 3 prioritized
+│ -  Etisalat recurring detected 🔄     │
+│ -  +12% savings vs avg ✅             │
+│ [View All →]                        │
+└─────────────────────────────────────┘
+
+┌─────────────────────────────────────┐  ← Recent Activity
+│ Recent Transactions                 │
+│ -  AED 150 Lulu (Groceries)          │
+│ -  AED 75 Talabat (Dining)           │
+│ -  AED 2,500 Salary                  │
+│ [View All →]                        │
+└─────────────────────────────────────┘
+
+[+]  ← FAB (bottom-right, elevated)
+```
+
+---
+
+## Card Components (All Clickable)
+
+### **1. Hero Budget Card**
+
+**Tap**: Opens Envelope Detail Screen
+
+**Content**:
+- 3 horizontal progress bars (Needs/Savings/Wants)
+- Remaining vs allocated amounts
+- % complete with color coding
+- "Adjust Budget" micro-CTA
+
+**ML Enhancement**:
+- Auto-suggest envelope adjustments based on spending patterns
+- "Dining eating into Savings? → Move AED 200 from Wants?"
+
+**Visual**:
+```
+🟢 Needs     ▓▓▓░░░ 35%  AED 1,200/3,400
+🔵 Savings   ▓▓░░░░ 47%  AED 800/1,700  
+🟡 Wants     ▓░░░░░ 25%  AED 847/3,400
+```
+
+### **2. Goal Cards** (Dynamic Priority Order)
+
+**Tap**: Goal Detail Screen  
+**Swipe Left**: Quick Update Target  
+**Swipe Right**: Allocate Transaction to Goal  
+**Long Press**: Goal Settings (Edit/Delete/History)
+
+**Dynamic Ordering (ML-powered)**:
+- Most urgent (farthest behind schedule)
+- Closest to milestone (10%, 25%, 50%)
+- On track / ahead
+
+**Content Template**:
+```
+🎯 [Goal Name]  [Status Icon]
+AED [current]/[target]  ▓▓░░░ [progress]%
+📅 [ETA] ([status text])
+[Micro-CTA →]
+```
+
+**Examples**:
+```
+🎯 Emergency Fund  ⚠️        ✅ Wealth Growth
+AED 12.5k/51.2k ▓▓░░░ 24%   AED 35k total 📈 +4.2%
+📅 Dec 2027 (21mo behind)    📅 Jun 2032 ✓ (ahead 3mo)
+[Details →]                  [Details →]
+```
+
+### **3. ML Insights Card**
+
+**Tap**: Full Insights Screen
+
+**Content**: Top 3 ML-generated insights (rotates daily)
+
+**On-Device ML Categories**:
+- **Anomaly Detection**: "Dining +45% vs 3mo avg"
+- **Pattern Recognition**: "Etisalat AED 150 x3 monthly"
+- **Goal Alignment**: "Savings pace 60% of target"
+- **Optimization**: "Move AED 200 Wants → Emergency Fund"
+- **Milestones**: "Hit 25% emergency fund! 🎉"
+
+**Priority Scoring (ML output)**:
+```
+Priority = urgency(0-1) × impact(0-1) × novelty(0-1)
+
+Urgent: behind schedule, overspend
+Impact: large amounts, recurring patterns  
+Novelty: new patterns vs historical baseline
+```
+
+**Visual**:
+```
+💡 ML Insights
+• Dining overspent AED 450 ⚠️
+• Etisalat recurring detected 🔄  
+• +12% savings vs avg ✅
+[View All →]
+```
+
+### **4. Recent Activity Card**
+
+**Tap**: Full Transactions Screen  
+**Swipe Left (per item)**: Recategorize/Split/Delete  
+**Swipe Right**: Mark Recurring/Add to Goal
+
+**Content**: Last 3 transactions (chronological)
+```
+• AED 150 Lulu (Groceries)    📅 Today
+• AED 75 Talabat (Dining)     📅 2h ago  
+• AED 2,500 Salary (Income)   📅 Yesterday
+[View All →]
+```
+
+---
+
+## On-Device ML Integration
+
+### **ML Models Required** (TFLite)
+
+1. **Transaction Categorization** (90%+ accuracy target)
+   - Input: merchant name, amount, SMS text
+   - Output: category confidence scores
+
+2. **Anomaly Detection**
+   - Input: 30-day transaction history
+   - Output: anomaly scores per category/merchant
+
+3. **Pattern Recognition**
+   - Input: transaction time series
+   - Output: recurring patterns, frequency predictions
+
+4. **Goal Optimization**
+   - Input: goals + spending patterns
+   - Output: reallocation suggestions, pace predictions
+
+### **ML Processing Pipeline**
+```
+Raw SMS → Regex Parser → ML Categorizer →
+Anomaly Detector → Pattern Recognizer →
+Insights Generator → Dashboard Cards
+```
+
+**Model Size Target**: <10MB total (fits in app bundle)
+
+---
+
+## Interactive Elements Detail
+
+### **Floating Action Button (FAB)**
+
+**[+ Add Expense]**  ← Primary (elevated, pulsing animation)
+
+**Long Press Menu**:
+```
+┌─────────────────────────────┐
+│ 📷 Scan Receipt             │  ← ML OCR + auto-categorize
+│ 📱 Quick Add (amount only)  │
+│ 🔄 Recurring Expense        │
+│ 📂 From Gallery             │
+└─────────────────────────────┘
+```
+
+### **Gesture Support**
+
+**Goal Cards**:
+- Tap → Details
+- Swipe L → Update target
+- Swipe R → Allocate funds
+- Long Press → Settings
+
+**Transactions**:
+- Swipe L → Edit/Delete/Split
+- Swipe R → Recurring/Goal
+- Tap → Detail + Edit
+
+### **Pull-to-Refresh Actions**
+- Re-run ML analysis
+- Check new SMS transactions
+- Quick-add modal overlay
+
+---
+
+## Data Flow & Calculations
+
+### **Real-time Metrics** (Update per transaction)
+
+```dart
+class DashboardState {
+  // Hero metric
+  double freeToSpend = calculateFreeToSpend(envelopes);
+
+  // Envelope status
+  EnvelopeStatus needs = calculateEnvelope('needs');
+  EnvelopeStatus savings = calculateEnvelope('savings');
+  EnvelopeStatus wants = calculateEnvelope('wants');
+
+  // Goals (ML-enhanced)
+  List goals = calculateGoalProgress(goals, mlInsights);
+
+  // Insights (ML-powered)
+  List insights = mlEngine.generateTop3();
+}
+```
+
+### **Goal ETA Calculation** (Enhanced with ML)
+
+```dart
+String calculateGoalETA(Goal goal) {
+  double predictedMonthlyProgress = mlEngine.predictSavingsRate();
+  double monthsRemaining = (goal.target - goal.current) / predictedMonthlyProgress;
+
+  // ML adjustment factors
+  double confidence = mlEngine.confidenceScore();
+  String trend = mlEngine.spendingTrend(); // "improving", "stable", "declining"
+
+  return formatETA(monthsRemaining, confidence, trend);
+}
+```
+
+---
+
+## Visual Design System
+
+### **Status Colors & Icons**
+```
+⚠️ Red    #FF4444  "Urgent attention"
+📅 Orange #FFAA00  "Warning / on track tight"
+✅ Green  #44FF44  "Good progress"
+🎉 Teal   #00DDFF  "Milestone hit"
+🔄 Blue   #4488FF  "Pattern detected"
+```
+
+### **Progress Indicators**
+```
+Linear: ▓▓▓░░░ 24%  (compact)
+Radial: ○▓▓░░░○ 24%  (goal cards)
+```
+
+### **Typography Scale**
+```
+Hero: 32pt bold (Free to Spend)
+Card Title: 18pt bold
+Amounts: 24pt bold (AED values)
+Labels: 14pt regular
+Micro-text: 12pt (ETA, %)
+```
+
+---
+
+## Accessibility Features
+
+✅ VoiceOver: "Emergency Fund goal, 24% complete, 21 months behind schedule"  
+✅ Dynamic Type support  
+✅ High contrast mode (all cards)  
+✅ Reduced motion option  
+✅ Screen reader priority: Hero → Goals → Insights  
+✅ ARIA labels for all status icons
+
+---
+
+## Performance Targets
+
+✅ Initial load: <500ms  
+✅ ML inference: <200ms per screen refresh  
+✅ Gesture response: <100ms  
+✅ Scroll 60fps  
+✅ Battery impact: <2% per hour active use
+
+---
+
+## Implementation Roadmap (3 Weeks)
+
+| Week | Component | Tasks | Dependencies |
+|------|-----------|--------|--------------|
+| **1** | Core Layout | Hero + Envelopes + Goals | Hive data |
+| **1** | ML Pipeline | TFLite integration + basic categorization | ML models |
+| **2** | Interactions | FAB + Gestures + Navigation | Week 1 |
+| **2** | Insights | Anomaly + Pattern detection | ML pipeline |
+| **3** | Polish | Animations + Accessibility + Testing | All above |
+
+---
+
+## A/B Testing Plan
+
+| Test | Variant A | Variant B | Metric |
+|------|-----------|-----------|--------|
+| Goal Priority | Urgency first | Milestone first | Goal interaction rate |
+| Insights Count | 3 insights | 5 insights | Action completion |
+| FAB Position | Bottom-right | Bottom-center | Add transaction rate |
+| Color System | Red/Orange/Green | Single gradient | Alert response rate |
+
+---
+
+## Success Metrics (Post-Launch)
+
+✅ Daily Active Users: >70% of onboarded  
+✅ Avg session time: >2 minutes  
+✅ Transaction add rate: >3/day per active user  
+✅ Goal interaction: >50% weekly  
+✅ ML insight click-through: >30%
+
+---
