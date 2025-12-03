@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
 import '../constants/app_constants.dart';
-import 'onboarding/google_signin_screen.dart';
+import 'onboarding/onboarding_wizard_screen.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -44,7 +44,7 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
     Timer(const Duration(seconds: 3), () {
       if (mounted) {
         Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (context) => const GoogleSignInScreen()),
+          MaterialPageRoute(builder: (context) => const OnboardingWizardScreen()),
         );
       }
     });
