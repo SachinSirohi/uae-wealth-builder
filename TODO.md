@@ -1,6 +1,6 @@
 # Personal Wealth Builder - TODO & Feature Roadmap
 
-**Last Updated:** December 3, 2025  
+**Last Updated:** December 3, 2024  
 **Repository:** [SachinSirohi/uae-wealth-builder](https://github.com/SachinSirohi/uae-wealth-builder)
 
 ---
@@ -1130,5 +1130,5 @@ This is a personal project, but suggestions and bug reports are welcome!
 
 ---
 
-*Last Updated: December 3, 2025*  
+*Last Updated: December 3, 2024*  
 *This TODO list will be regularly updated as features are completed and new requirements emerge.*
